@@ -33,6 +33,7 @@
       img.alt = project.title || "";
       img.loading = "lazy";
       img.decoding = "async";
+      if (/\.gif$/i.test(work.img)) img.style.imageRendering = "pixelated"; // keep pixel art crisp
       img.onerror = function () { img.remove(); media.classList.add("is-empty"); };
       media.appendChild(img);
     } else {
