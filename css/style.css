@@ -119,24 +119,9 @@ a:focus-visible,
 }
 .tile__media img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
-/* Project info only appears as the cursor label on a computer; phones show just the images */
+/* No captions or labels: the grid is images only (titles are kept for screen readers) */
 .tile__info { display: none; }
 
-/* Plain text label that follows the cursor */
-.cursor-label {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 30;
-  padding: 1px 5px 2px;
-  background: var(--bg);
-  color: var(--fg);
-  white-space: nowrap;
-  pointer-events: none;
-  opacity: 0;
-}
-.cursor-label.is-on { opacity: 1; }
-.cursor-label__meta { color: var(--muted); }
 
 /* ---------- Footer ---------- */
 .site-footer {

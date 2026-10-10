@@ -128,44 +128,17 @@
     }
   }
 
-  /* ---------- 3. Hover: a plain text label follows the cursor,
-                 the hovered project stays, everything else fades ---------- */
+  /* ---------- 3. Hover: the hovered project stays sharp, everything else blurs.
+                 No label or overlay; the project name is read out to screen readers only. ---------- */
   if (!isTouch && grid) {
-    var tip = document.createElement("div");
-    tip.className = "cursor-label";
-    tip.setAttribute("aria-hidden", "true");
-    document.body.appendChild(tip);
-
     var setActive = function (t) {
       var key = t ? t.work.project : null;
       grid.classList.toggle("is-hovering", !!key);
       tiles.forEach(function (o) { o.el.classList.toggle("is-active", o.work.project === key); });
-      if (t) {
-        var p = projects[key] || {};
-        tip.textContent = p.title || "";
-        var meta = [p.category, p.year].filter(Boolean).join(", ");
-        if (meta) {
-          var s = document.createElement("span");
-          s.className = "cursor-label__meta";
-          s.textContent = "  " + meta;
-          tip.appendChild(s);
-        }
-      }
-      tip.classList.toggle("is-on", !!t);
-    };
-    var moveTip = function (x, y) {
-      var nx = Math.min(x + 14, window.innerWidth - tip.offsetWidth - 8);
-      var ny = Math.min(y + 18, window.innerHeight - tip.offsetHeight - 8);
-      tip.style.transform = "translate(" + nx + "px," + ny + "px)";
     };
     tiles.forEach(function (t) {
-      t.el.addEventListener("mouseenter", function (e) { setActive(t); moveTip(e.clientX, e.clientY); });
-      t.el.addEventListener("mousemove", function (e) { moveTip(e.clientX, e.clientY); });
-      t.el.addEventListener("focus", function () {
-        setActive(t);
-        var r = t.el.getBoundingClientRect();
-        moveTip(r.left, r.top);
-      });
+      t.el.addEventListener("mouseenter", function () { setActive(t); });
+      t.el.addEventListener("focus", function () { setActive(t); });
       t.el.addEventListener("blur", function () { setActive(null); });
     });
     grid.addEventListener("mouseleave", function () { setActive(null); });
