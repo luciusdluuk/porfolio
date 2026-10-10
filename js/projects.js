@@ -9,7 +9,7 @@
     year:     e.g. "2025" (leave "" to hide it)
 
   WORKS — every image in the grid, in order (top of the page first).
-    id:      just a number, shown on grey placeholders
+    id:      just a number to keep track (not shown on the site)
     img:     the file in the images/ folder, e.g. "images/gpf-stickers.jpg"
              leave "" and a grey placeholder is shown instead
     w, h:    the image's width and height in pixels (only the ratio matters)

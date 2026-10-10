@@ -27,7 +27,6 @@
 
     var media = document.createElement("div");
     media.className = "tile__media";
-    media.dataset.label = work.id;
     if (work.img) {
       var img = new Image();
       img.src = work.img;
