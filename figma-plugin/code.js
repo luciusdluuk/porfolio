@@ -3,8 +3,8 @@
 
   Builds the landing page in Figma, desktop and mobile, with the prototype wired up:
   - Page "Landing — Desktop": 1440 wide, hover on any image shows its title, the email stays fixed.
-  - Page "Landing — Mobile": 390 wide, captions under the images, the email stays fixed.
-  - Page "Components": the image tiles (desktop with a Hover state, mobile with a caption).
+  - Page "Landing — Mobile": 390 wide, images only (no captions), the email stays fixed.
+  - Page "Components": the image tiles (desktop with a Hover state, mobile image-only).
 
   Same text, same 30 images and same packed layout as the website.
   To change titles, edit PROJECTS below (or just edit the text in Figma afterwards).
@@ -97,7 +97,7 @@ const TILE = { r: 0.937, g: 0.937, b: 0.929 };
 const solid = (c) => [{ type: "SOLID", color: c }];
 
 const DESKTOP = { name: "Landing — Desktop", width: 1440, gutter: 16, gap: 10, cols: 6, fs: 16, top: 16, bioWidth: 560, workGap: 96, footerGap: 160, caption: 0 };
-const MOBILE = { name: "Landing — Mobile", width: 390, gutter: 16, gap: 8, cols: 2, fs: 15, top: 52, bioWidth: 358, workGap: 72, footerGap: 120, caption: 36 };
+const MOBILE = { name: "Landing — Mobile", width: 390, gutter: 16, gap: 8, cols: 2, fs: 15, top: 52, bioWidth: 358, workGap: 72, footerGap: 120, caption: 0 };
 const SMALL = 13;
 
 let FONT = { family: "Inter", style: "Regular" };
@@ -260,10 +260,10 @@ async function buildDesktopTile(page) {
 }
 
 function buildMobileTile(page) {
-  const cap = MOBILE.caption;
+  // Phones show only the images (no captions), so the mobile tile is just an image frame.
   const c = figma.createComponent();
   c.name = "Tile / Mobile";
-  c.resize(180, 180 + cap);
+  c.resize(180, 180);
   c.fills = [];
   c.clipsContent = true;
 
@@ -273,29 +273,8 @@ function buildMobileTile(page) {
   img.fills = solid(TILE);
   img.constraints = { horizontal: "STRETCH", vertical: "STRETCH" };
   c.appendChild(img);
-
-
-  const lines = [["Title", "Project title", BLACK, 180 + 4], ["Meta", "Category", MUTED, 180 + 4 + 16]];
-  for (const [name, chars, color, y] of lines) {
-    const t = text(chars, SMALL, color, name);
-    t.lineHeight = { unit: "PIXELS", value: 16 };
-    t.textAutoResize = "NONE";
-    t.resize(180, 16);
-    t.textTruncation = "ENDING";
-    t.x = 0;
-    t.y = y;
-    t.constraints = { horizontal: "STRETCH", vertical: "MAX" };
-    c.appendChild(t);
-  }
   page.appendChild(c);
-
-  const keys = {
-    title: c.addComponentProperty("Title", "TEXT", "Project title"),
-    meta: c.addComponentProperty("Category", "TEXT", "Category")
-  };
-  c.findOne((n) => n.name === "Title").componentPropertyReferences = { characters: keys.title };
-  c.findOne((n) => n.name === "Meta").componentPropertyReferences = { characters: keys.meta };
-  return { comp: c, keys };
+  return { comp: c, keys: {} };
 }
 
 /* ---------------- Landing page ---------------- */
@@ -339,7 +318,7 @@ async function buildLanding(page, spec, tileComp, keys) {
     inst.resize(r.w, r.h + spec.caption);
     inst.x = r.x;
     inst.y = r.y;
-    inst.setProperties({ [keys.title]: p.title || "", [keys.meta]: p.category || "" });
+    if (keys.title) inst.setProperties({ [keys.title]: p.title || "", [keys.meta]: p.category || "" });
   }
 
   // Footer

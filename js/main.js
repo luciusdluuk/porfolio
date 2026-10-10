@@ -70,7 +70,7 @@
     var width = grid.clientWidth;
     var cols = columnCount(width);
     var gap = parseFloat(getComputedStyle(grid).getPropertyValue("--gap")) || 10;
-    var cap = isTouch ? parseFloat(getComputedStyle(grid).getPropertyValue("--cap")) || 38 : 0;
+    var cap = 0; // no captions under images (hover label on computers only)
     var colW = (width - gap * (cols - 1)) / cols;
 
     var bottoms = new Array(cols).fill(0); // where the next tile can start in each column

@@ -28,7 +28,6 @@
 
   --gutter: 16px;   /* space at the page edges */
   --gap: 10px;      /* space between images */
-  --cap: 36px;      /* caption height under images on touch screens */
 
   color-scheme: light;
 }
@@ -120,20 +119,8 @@ a:focus-visible,
 }
 .tile__media img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
-/* Captions only exist on touch screens; on a computer the cursor label shows the info */
+/* Project info only appears as the cursor label on a computer; phones show just the images */
 .tile__info { display: none; }
-.is-touch .tile__info {
-  display: block;
-  height: var(--cap);
-  padding-top: 4px;
-  font-size: var(--fs-s);
-  line-height: 1.25;
-  white-space: nowrap;
-  overflow: hidden;
-}
-.is-touch .tile__title,
-.is-touch .tile__meta { display: block; overflow: hidden; text-overflow: ellipsis; }
-.is-touch .tile__meta { color: var(--muted); }
 
 /* Plain text label that follows the cursor */
 .cursor-label {
